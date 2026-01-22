@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -25,13 +27,17 @@ class OtpRepo {
           'isFromForgetPassword': isFromForgetPassword,
         },
       );
+      log(response.data.toString());
       final status = response.statusCode ?? 0;
       if (status >= 200 && status < 300) {
         return Right('otp verified successfully');
       } else {
+        log(response.data.toString());
+
         return Left(response.data['message'] ?? 'Error');
       }
     } catch (e) {
+      log(e.toString());
       return Left(e.toString());
     }
   }

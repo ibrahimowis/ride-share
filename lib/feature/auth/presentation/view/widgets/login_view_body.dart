@@ -43,7 +43,11 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               backgroundColor: KprimarybuttonColor,
             ),
           );
-          context.go('/navBar');
+          if (state.responseModel.data?.status == "unverified") {
+            context.push('/checkscreen', extra: emailController.text);
+          } else {
+            context.go('/navBar');
+          }
         }
       },
       child: Stack(

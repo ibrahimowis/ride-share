@@ -207,30 +207,38 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                                 ),
                               ),
                               const SizedBox(height: 100),
-                              textButtonCustom(
-                                text: 'تحقق',
-                                color: KprimarybuttonColor,
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  if (otpCode.length != 6) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          'الرجاء ادخال رمز كامل مكون من 6 ارقام',
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    context.push('/loginViewScreen');
-                                  }
-                                  context.read<OtpCubit>().verifyOtp(
-                                    email: widget.email,
-                                    otpCode: otpCode,
-                                    isFromForgetPassword:
-                                        widget.isFromForgetPassword,
+                              BlocBuilder<OtpCubit, OtpState>(
+                                builder: (context, state) {
+                                  bool isLoading = state is OtpLoadingState;
+                                  return textButtonCustom(
+                                    text: isLoading ? 'جاري الارسال' : 'تحقق',
+                                    color: KprimarybuttonColor,
+                                    textColor: Colors.white,
+                                    onPressed: () async {
+                                      if (otpCode.length != 6) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'الرجاء ادخال رمز كامل مكون من 6 ارقام',
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        await context
+                                            .read<OtpCubit>()
+                                            .verifyOtp(
+                                              email: widget.email,
+                                              otpCode: otpCode,
+                                              isFromForgetPassword:
+                                                  widget.isFromForgetPassword,
+                                            );
+                                      }
+                                    },
+                                    fontsize: 25,
                                   );
                                 },
-                                fontsize: 25,
                               ),
                             ],
                           ),
