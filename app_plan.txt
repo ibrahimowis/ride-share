@@ -1,0 +1,23 @@
+user ::
+
+email: ahmedmedhat1072001+d1@gmail.com && ibrahimowis24+4@gmail.com
+password: Aa@123456 && StrongPass1
+
+
+//auth section
+1. login > auth/login
+2. sign up > auth/sign-up
+3. verify otp > auth/verify-otp (make "isFromForgetPassword": false)
+4. auth/update-profile
+note: save the access token in the preferences > you'll need it in any of this enpoints
+
+//cities section
+1. get governorates
+2. get cities by governorate
+3. get districts by city
+
+// search for rides
+1. get rides /rides (GET)
+
+//profille(settings)
+1. auth/get-me
