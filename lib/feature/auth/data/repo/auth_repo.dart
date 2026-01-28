@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:kosom_chat_gpt/feature/auth/data/model/login_response_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
   final _dio = Dio(
@@ -21,11 +22,14 @@ class AuthRepo {
 
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         final returnedData = LoginResponseModel.fromJson(response.data);
+        if (returnedData.data?.accessToken != null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('token', returnedData.data!.accessToken!);
+        }
         return Right(returnedData);
-        //TODO: look at this success
       } else {
         log('error occured ${response.data}');
-        return Left(response.data['message']);
+        return Left(response.data['message'] ?? 'unknown error');
       }
     } catch (e) {
       log('catch error:: ${e.toString()}');

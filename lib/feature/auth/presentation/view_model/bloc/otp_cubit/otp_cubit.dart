@@ -7,6 +7,7 @@ part 'otp_state.dart';
 class OtpCubit extends Cubit<OtpState> {
   final OtpRepo otpRepo;
   OtpCubit(this.otpRepo) : super(OtpInitial());
+
   Future<void> verifyOtp({
     required String email,
     required String otpCode,
@@ -34,11 +35,11 @@ class OtpCubit extends Cubit<OtpState> {
 
   Future<void> resendOtp({required String email}) async {
     try {
-      emit(OtpLoadingState()); // يظهر Loading
+      emit(OtpLoadingState());
       final result = await otpRepo.otp(
         email: email,
-        otpCode: '', // مفيش OTP هنا لإنه إعادة إرسال
-        isFromForgetPassword: true, // لو خاص بإعادة تعيين كلمة السر
+        otpCode: '',
+        isFromForgetPassword: true,
       );
       result.fold(
         (error) => emit(OtpErrorState(error)),

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-class UpdateProfile {
+class UpdateProfileRepo {
   final dio_ = Dio(
     BaseOptions(
       validateStatus: (status) => status != null && status < 500,

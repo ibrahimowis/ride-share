@@ -19,9 +19,22 @@ class Settings_Screen extends StatelessWidget {
       children: [
         settingsAppBarScreen(),
 
-        Text(
-          context.read<AuthCubit>().myLoginModel?.data?.user?.id?.toString() ??
-              "",
+        Container(
+          color: KprimaryColor,
+          width: double.infinity,
+          child: Center(
+            child: Text(
+              context
+                      .read<AuthCubit>()
+                      .myLoginModel
+                      ?.data
+                      ?.user
+                      ?.id
+                      ?.toString() ??
+                  "",
+              style: TextStyle(color: const Color.fromARGB(255, 242, 243, 250)),
+            ),
+          ),
         ),
 
         Expanded(
@@ -60,7 +73,6 @@ class Settings_Screen extends StatelessWidget {
                       SizedBox(height: 30),
                       PersonalProfile(),
                       SizedBox(height: 30),
-
                       LanguageScreen(),
                       SizedBox(height: 20),
                       HelpScreen(),

@@ -11,6 +11,8 @@ class CustomTextFormField extends StatefulWidget {
   final IconData? prefixIcon;
   final double? hight;
   final double? width;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   const CustomTextFormField({
     required this.labelText,
@@ -22,6 +24,8 @@ class CustomTextFormField extends StatefulWidget {
     this.hight,
     this.width,
     this.textColor,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
