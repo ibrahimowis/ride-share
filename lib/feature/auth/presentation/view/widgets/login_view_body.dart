@@ -1,5 +1,7 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart' as tr;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kosom_chat_gpt/core/shared/widgets/constants.dart';
@@ -21,12 +23,12 @@ class _LoginViewBodyState extends State<LoginViewBody> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginErrorState) {
-          //show error to user
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.errString),
@@ -34,11 +36,12 @@ class _LoginViewBodyState extends State<LoginViewBody> {
             ),
           );
         } else if (state is LoginSuccessState) {
-          // navigate into home screen
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                'user id is :: ${state.responseModel.data?.user?.id}',
+                'user_id_is'.tr(
+                  args: ['${state.responseModel.data?.user?.id}'],
+                ),
               ),
               backgroundColor: KprimarybuttonColor,
             ),
@@ -55,7 +58,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
           Container(color: KprimaryColor),
           Column(
             children: [
-              AuthAppBar(title: 'تسجيل دخول'),
+              AuthAppBar(title: 'sign_in_button'.tr()),
               Expanded(
                 child: Container(
                   width: double.infinity,
@@ -70,7 +73,13 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Directionality(
-                        textDirection: TextDirection.rtl,
+                        textDirection:
+                            (EasyLocalization.of(
+                                  context,
+                                )!.locale.languageCode ==
+                                'ar')
+                            ? ui.TextDirection.rtl
+                            : ui.TextDirection.ltr,
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -88,7 +97,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                               ),
                               Center(
                                 child: Text(
-                                  'مرحبا بعودتك',
+                                  'welcome_back'.tr(),
                                   style: Styles.textStyle24.copyWith(
                                     color: KsigninTextColor,
                                   ),
@@ -97,7 +106,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                               SizedBox(height: 10),
                               Center(
                                 child: Text(
-                                  'برجاء ادخال تفاضيل حسابك لتسجيل الدخول',
+                                  'enter_details'.tr(),
                                   style: Styles.textStyle14.copyWith(
                                     color: KsigninTextColor,
                                   ),
@@ -105,35 +114,35 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                               ),
                               SizedBox(height: 20),
                               Text(
-                                'البريد الاكتروني',
+                                'email_label'.tr(),
                                 style: Styles.textStyle14.copyWith(
                                   color: Colors.black,
                                 ),
                               ),
                               SizedBox(height: 13),
                               CustomTextFormField(
-                                labelText: 'ادخل بريدك الالكتروني',
-                                errorText: 'من فضلك ادخل البريد',
+                                labelText: 'email_hint'.tr(),
+                                errorText: 'email_error'.tr(),
                                 controller: emailController,
                                 keyboardType: TextInputType.emailAddress,
                               ),
                               SizedBox(height: 20),
                               Text(
-                                'الرقم السري',
+                                'password_label'.tr(),
                                 style: Styles.textStyle14.copyWith(
                                   color: Colors.black,
                                 ),
                               ),
                               SizedBox(height: 13),
                               CustomTextFormField(
-                                labelText: 'ادخل رقمك السري',
+                                labelText: 'password_hint'.tr(),
+                                errorText: 'password_error'.tr(),
                                 controller: passwordController,
-                                errorText: 'من فضلك ادخل رقمك السري',
                                 isPassword: true,
                               ),
                               SizedBox(height: 7),
                               Text(
-                                'هل نسيت كلمة المرور ؟',
+                                'forgot_password'.tr(),
                                 style: Styles.textStyle14.copyWith(
                                   color: Colors.grey,
                                 ),
@@ -145,8 +154,8 @@ class _LoginViewBodyState extends State<LoginViewBody> {
 
                                   return textButtonCustom(
                                     text: isLoading
-                                        ? 'جاري الإرسال'
-                                        : 'تسجيل الدخول'.tr(),
+                                        ? 'sending'.tr()
+                                        : 'sign_in_button'.tr(),
                                     color: KprimarybuttonColor,
                                     textColor: Colors.white,
                                     onPressed: isLoading
@@ -174,17 +183,17 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'ليس لديك حساب؟ ',
+                                    'no_account'.tr(),
                                     style: Styles.textStyle14.copyWith(
                                       color: Colors.black,
                                     ),
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      context.push('/signinScreen'); //
+                                      context.push('/signinScreen');
                                     },
                                     child: Text(
-                                      'قم بالتسجيل ',
+                                      'sign_up'.tr(),
                                       style: Styles.textStyle14.copyWith(
                                         color: KprimarybuttonColor,
                                         fontWeight: FontWeight.bold,

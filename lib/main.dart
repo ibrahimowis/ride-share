@@ -4,15 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kosom_chat_gpt/core/utils/helper/app_router.dart';
 import 'package:kosom_chat_gpt/feature/auth/data/repo/auth_repo.dart';
 import 'package:kosom_chat_gpt/feature/auth/presentation/view_model/auth_cubit.dart';
+import 'package:kosom_chat_gpt/feature/settings/data/repo/update_profile_repo.dart';
+import 'package:kosom_chat_gpt/feature/settings/presentions/view_model/cubit/update_profile_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale("ar"), Locale("en")],
-      saveLocale: true,
+      supportedLocales: const [Locale('ar'), Locale('en')],
       path: 'assets/translations',
+      saveLocale: true,
       child: const MyApp(),
     ),
   );
@@ -25,6 +27,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => AuthCubit(AuthRepo())),
+        BlocProvider<UpdateProfileCubit>(
+          create: (context) => UpdateProfileCubit((UpdateProfileRepo())),
+        ),
       ],
       child: MaterialApp.router(
         localizationsDelegates: context.localizationDelegates,

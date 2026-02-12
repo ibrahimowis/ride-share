@@ -20,7 +20,7 @@ class Settings_Screen extends StatelessWidget {
         settingsAppBarScreen(),
 
         Container(
-          color: const Color.fromARGB(255, 216, 217, 228),
+          color: KprimaryColor,
           width: double.infinity,
           child: Center(
             child: Text(

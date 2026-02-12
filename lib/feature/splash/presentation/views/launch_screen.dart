@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kosom_chat_gpt/core/assets/images/image_assets.dart';
+import 'package:kosom_chat_gpt/feature/auth/presentation/view_model/auth_cubit.dart';
 
 class LaunchScreen extends StatefulWidget {
   const LaunchScreen({super.key});
@@ -53,8 +55,13 @@ class _LaunchScreenState extends State<LaunchScreen> {
   }
 
   Future<void> NavigateToOnBoarding() async {
-    await Future.delayed(const Duration(seconds: 2), () {
-      GoRouter.of(context).pushReplacement('/splashViewBody');
-    });
+    await Future.delayed(const Duration(seconds: 2));
+    final authCubit = context.read<AuthCubit>();
+    await authCubit.checkAuth();
+    if (authCubit.state is AuthenticatedState) {
+      context.go('/navbar');
+    } else {
+      context.go('/loginViewScreen');
+    }
   }
 }

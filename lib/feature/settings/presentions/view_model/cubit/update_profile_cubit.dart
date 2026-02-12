@@ -11,9 +11,9 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     String? fullName,
     String? phoneNumber,
     String? gender,
-    String? nationalId,
     String? dateOfBirth,
     File? profileimage,
+    File? nationalImage,
   }) async {
     try {
       emit(UpdateProfileLoadingState());
@@ -21,9 +21,9 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
         fullName: fullName,
         phoneNumber: phoneNumber,
         gender: gender,
-        nationalId: nationalId,
         dateOfBirth: dateOfBirth,
         profileimage: profileimage,
+        nationalImage: nationalImage,
       );
       result.fold(
         (error) {

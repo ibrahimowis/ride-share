@@ -23,15 +23,75 @@ class AuthCubit extends Cubit<AuthState> {
         },
         (returnedResponse) async {
           myLoginModel = returnedResponse;
-          if (returnedResponse.data!.accessToken != null) {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setString('token', returnedResponse.data!.accessToken!);
-          }
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            'accessToken',
+            returnedResponse.data!.accessToken!,
+          );
+          await prefs.setString(
+            "refreshToken",
+            returnedResponse.data!.refreshToken!,
+          );
           emit(LoginSuccessState(returnedResponse));
         },
       );
     } catch (e) {
       emit(LoginErrorState(e.toString()));
     }
+  }
+
+  Future<void> checkAuth() async {
+    emit(LoginLoadingState());
+    final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('accessToken');
+    final refreshToken = prefs.getString('refreshToken');
+
+    if (accessToken == null) {
+      emit(UnAuthenticatedState());
+      return;
+    }
+
+    final result = await authRepo.getMe(token: accessToken);
+
+    result.fold(
+      (error) async {
+        if (refreshToken == null) {
+          emit(UnAuthenticatedState());
+          return;
+        }
+
+        final refreshResult = await authRepo.refreshToken(
+          refreshToken: refreshToken,
+        );
+
+        refreshResult.fold(
+          (refreshError) {
+            emit(UnAuthenticatedState());
+          },
+          (refreshResponse) async {
+            await prefs.setString(
+              'accessToken',
+              refreshResponse.data!.accessToken!,
+            );
+            await prefs.setString(
+              'refreshToken',
+              refreshResponse.data!.refreshToken!,
+            );
+            emit(AuthenticatedState());
+          },
+        );
+      },
+      (success) {
+        emit(AuthenticatedState());
+      },
+    );
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('accessToken');
+    await prefs.remove('refreshToken');
+
+    emit(UnAuthenticatedState());
   }
 }

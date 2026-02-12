@@ -1,3 +1,15 @@
 {
-    "sign_in_button": "تسجيل دخول"
+  "welcome_back": "مرحبا بعودتك",
+  "enter_details": "برجاء ادخال تفاضيل حسابك لتسجيل الدخول",
+  "email_label": "البريد الاكتروني",
+  "email_hint": "ادخل بريدك الالكتروني",
+  "email_error": "من فضلك ادخل البريد",
+  "password_label": "الرقم السري",
+  "password_hint": "ادخل رقمك السري",
+  "password_error": "من فضلك ادخل رقمك السري",
+  "forgot_password": "هل نسيت كلمة المرور ؟",
+  "sign_in_button": "تسجيل الدخول",
+  "sending": "جاري الإرسال",
+  "no_account": "ليس لديك حساب؟",
+  "sign_up": "قم بالتسجيل"
 }
